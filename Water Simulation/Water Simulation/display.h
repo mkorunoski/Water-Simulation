@@ -13,9 +13,12 @@ public:
 	void Clear(float r, float g, float b, float a);
 	void SwapBuffers();
 	void SetWindowName(const std::string& name) const;
-	void RenderToTexture();
+
+	void RenderSceneToTexture();
+	void RenderSceneDepthToTexture();
 	void RenderOnscreen();
-	GLuint GetFramebufferContent() { return m_renderedTexture; }
+	//GLuint GetSceneTexture() { return m_sceneTexture; }
+	GLuint GetSceneDepthTexture() { return m_sceneDepthTexture; }
 
 	virtual ~Display();
 protected:
@@ -23,13 +26,17 @@ private:
 	void operator=(const Display& display) {}
 	Display(const Display& display) {}
 
+	void GenTextures();
+
 	SDL_Window* m_window;
 	int m_width;
 	int m_height;
 	SDL_GLContext m_glContext;
 
 	GLuint m_fbo;
-	GLuint m_renderedTexture;
+	GLuint m_dbo;
+	//GLuint m_sceneTexture;
+	GLuint m_sceneDepthTexture;
 };
 
 #endif

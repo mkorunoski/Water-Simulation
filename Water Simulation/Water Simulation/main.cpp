@@ -88,6 +88,8 @@ int main(int argc, char** argv)
 
 		// camera.RotateView(50.0f, 0.1f * timer.TotalTime());
 
+		display.RenderSceneDepthToTexture();
+
 		groundShader.Bind();
 		groundShader.Update(transform, camera);
 		pointLight.Bind(groundShader.GetProgram());
@@ -95,20 +97,27 @@ int main(int argc, char** argv)
 		hillsHeightmap.Bind(groundShader.GetProgram(), "heightmap", 0);
 		hillsTexture.Bind(groundShader.GetProgram(), "tex", 1);
 		ground.Draw();
-		
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		display.RenderOnscreen();
+		Texture depthTexture(display.GetSceneDepthTexture());
+
+		groundShader.Bind();
+		groundShader.Update(transform, camera);
+		pointLight.Bind(groundShader.GetProgram());
+		groundMaterial.Bind(groundShader.GetProgram());
+		hillsHeightmap.Bind(groundShader.GetProgram(), "heightmap", 0);
+		hillsTexture.Bind(groundShader.GetProgram(), "tex", 1);
+		ground.Draw();
 
 		waterShader.Bind();
 		waterShader.Update(transform, camera);
 		pointLight.Bind(waterShader.GetProgram());	
 		waterMaterial.Bind(waterShader.GetProgram());
-		hillsTexture.Bind(waterShader.GetProgram(), "tex", 0);
+		depthTexture.Bind(waterShader.GetProgram(), "tex", 0);
 		skybox.Bind();
 		deformer.Update(0.1f * timer.TotalTime());		
 		water.Draw();
 
-		glDisable(GL_BLEND);
 		display.SwapBuffers();		
 		
 		CalculateFrameStats(display);
