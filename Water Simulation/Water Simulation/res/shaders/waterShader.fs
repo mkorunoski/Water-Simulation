@@ -1,4 +1,4 @@
-#version 420 core
+#version 330 core
 
 struct PointLight
 {
@@ -23,6 +23,7 @@ in vec2 f_texCoord;
 in vec3 f_normal;
 
 uniform samplerCube skybox;
+uniform sampler2D tex;
 uniform PointLight pointLight;
 uniform Material material;
 uniform vec3 eyePos;
@@ -33,15 +34,18 @@ void computePointLight(out vec4 diffuse, out vec4 specular);
 
 void main()
 {	
+	vec3 normal = normalize(f_normal);
+
 	vec4 diffuse;
 	vec4 specular;
 	computePointLight(diffuse, specular);
 
+	// reflection
 	vec3 I = normalize(f_position - eyePos);
-    vec3 R = reflect(I, normalize(f_normal));
-    vec4 sampledColor = texture(skybox, R);
+    vec3 R = reflect(I, normal);
+    vec4 reflectionColor = texture(skybox, R);
 
-	fragColor = sampledColor * (diffuse + specular);
+	fragColor = reflectionColor * (diffuse + specular);
 }
 
 void computePointLight(out vec4 diffuse, out vec4 specular)

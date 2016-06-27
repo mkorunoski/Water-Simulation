@@ -1,30 +1,14 @@
-﻿Build started 6/26/2016 12:23:52 PM.
-     1>Project "C:\Users\mkoru\Desktop\Water Simulation repo\Water Simulation\Water Simulation\Water Simulation.vcxproj" on node 2 (Build target(s)).
+﻿Build started 27.06.2016 14:05:45.
+     1>Project "C:\Users\Zarko\Downloads\Water Simulation repo\Water Simulation\Water Simulation\Water Simulation.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         E:\Programs\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt CubemapTexure.cpp display.cpp GameTimer.cpp geometry.cpp main.cpp mesh.cpp obj_loader.cpp shader.cpp texture.cpp
-         texture.cpp
-         shader.cpp
-         obj_loader.cpp
-     1>c:\users\mkoru\desktop\water simulation repo\water simulation\water simulation\obj_loader.cpp(378): warning C4244: 'return' : conversion from 'double' to 'float', possible loss of data
-         mesh.cpp
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt geometry.cpp main.cpp mesh.cpp
          main.cpp
-         geometry.cpp
-         GameTimer.cpp
-         display.cpp
-         CubemapTexure.cpp
          Generating Code...
-         E:\Programs\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I.\include /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc120.pdb" /Gd /TC /analyze- /errorReport:prompt stb_image.c
-         stb_image.c
-     1>c:\users\mkoru\desktop\water simulation repo\water simulation\water simulation\stb_image.c(300): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 e:\programs\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
-     1>c:\users\mkoru\desktop\water simulation repo\water simulation\water simulation\stb_image.c(362): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 e:\programs\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
-     1>c:\users\mkoru\desktop\water simulation repo\water simulation\water simulation\stb_image.c(400): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 e:\programs\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
-     1>c:\users\mkoru\desktop\water simulation repo\water simulation\water simulation\stb_image.c(4293): warning C4996: 'fopen': This function or variable may be unsafe. Consider using fopen_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 e:\programs\microsoft visual studio 12.0\vc\include\stdio.h(211) : see declaration of 'fopen'
+         Skipping... (no relevant changes detected)
+         mesh.cpp
+         geometry.cpp
        Link:
-         E:\Programs\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\mkoru\Desktop\Water Simulation repo\Water Simulation\Debug\Water Simulation.exe" /INCREMENTAL /NOLOGO /LIBPATH:.\lib glew32.lib glew32s.lib SDL2.lib SDL2main.lib SDL2test.lib OpenGL32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\mkoru\Desktop\Water Simulation repo\Water Simulation\Debug\Water Simulation.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\mkoru\Desktop\Water Simulation repo\Water Simulation\Debug\Water Simulation.lib" /MACHINE:X86 Debug\CubemapTexure.obj
+         C:\Program Files\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Zarko\Downloads\Water Simulation repo\Water Simulation\Debug\Water Simulation.exe" /INCREMENTAL /NOLOGO /LIBPATH:.\lib glew32.lib glew32s.lib SDL2.lib SDL2main.lib SDL2test.lib OpenGL32.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Zarko\Downloads\Water Simulation repo\Water Simulation\Debug\Water Simulation.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Zarko\Downloads\Water Simulation repo\Water Simulation\Debug\Water Simulation.lib" /MACHINE:X86 Debug\CubemapTexure.obj
          Debug\display.obj
          Debug\GameTimer.obj
          Debug\geometry.obj
@@ -34,9 +18,9 @@
          Debug\shader.obj
          Debug\stb_image.obj
          Debug\texture.obj
-         Water Simulation.vcxproj -> C:\Users\mkoru\Desktop\Water Simulation repo\Water Simulation\Debug\Water Simulation.exe
-     1>Done Building Project "C:\Users\mkoru\Desktop\Water Simulation repo\Water Simulation\Water Simulation\Water Simulation.vcxproj" (Build target(s)).
+         Water Simulation.vcxproj -> C:\Users\Zarko\Downloads\Water Simulation repo\Water Simulation\Debug\Water Simulation.exe
+     1>Done Building Project "C:\Users\Zarko\Downloads\Water Simulation repo\Water Simulation\Water Simulation\Water Simulation.vcxproj" (Build target(s)).
 
 Build succeeded.
 
-Time Elapsed 00:00:05.60
+Time Elapsed 00:00:04.13

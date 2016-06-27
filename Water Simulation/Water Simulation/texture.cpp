@@ -27,9 +27,11 @@ Texture::~Texture()
 	glDeleteTextures(1, &m_texture);
 }
 
-void Texture::Bind(GLenum texture)
-{
-	glActiveTexture(texture);
+void Texture::Bind(GLuint program, const std::string& uName, int i)
+{	
+	int texLocation = glGetUniformLocation(program, uName.c_str());
+	glUniform1i(texLocation, i);
+	glActiveTexture(GL_TEXTURE0 + i);
 	glBindTexture(GL_TEXTURE_2D, m_texture);
 }
 

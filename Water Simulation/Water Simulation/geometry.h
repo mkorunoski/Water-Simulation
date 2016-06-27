@@ -13,7 +13,7 @@ typedef struct MeshData
 class Geometry
 {	
 public:
-	static void generateGrid(bool flat, int width, int depth, unsigned int m, unsigned int n, MeshData& meshData);
+	static void generateGrid(int width, int depth, unsigned int m, unsigned int n, MeshData& meshData);
 };
 
 #endif

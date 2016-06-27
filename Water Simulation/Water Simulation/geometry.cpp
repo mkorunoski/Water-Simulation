@@ -1,22 +1,6 @@
 #include "geometry.h"
 
-float GetHeight(float x, float z)
-{
-	return 0.3f * (z * sin(0.1f * x) + x * cos(0.1f * z));;
-}
-
-glm::vec3 GetNormal(float x, float z)
-{
-	// n = (-df/dx, 1, -df/dz)
-	glm::vec3 n(
-		-0.03f*z*cosf(0.1f*x) - 0.3f*cosf(0.1f*z),
-		 1.0f,
-		-0.3f*sinf(0.1f*x) + 0.03f*x*sinf(0.1f*z));
-	glm::vec3 unitNormal = glm::normalize(n);	
-	return unitNormal;
-}
-
-void Geometry::generateGrid(bool flat, int width, int depth, unsigned int m, unsigned int n, MeshData& meshData)
+void Geometry::generateGrid(int width, int depth, unsigned int m, unsigned int n, MeshData& meshData)
 {
 	unsigned int vertexCount = m * n;
 	unsigned int faceCount = 2 * (m - 1) * (n - 1);
@@ -34,18 +18,9 @@ void Geometry::generateGrid(bool flat, int width, int depth, unsigned int m, uns
 		for (unsigned int j = 0; j < n; ++j)
 		{
 			float x = -halfWidth + j * dx;
-			if (flat)
-			{
-				meshData.vertices[i * n + j].SetPos(glm::vec3(x, 0.0f, z));
-				meshData.vertices[i * n + j].SetNormal(glm::vec3(0.0f, 1.0f, 0.0f));
-				meshData.vertices[i * n + j].SetTexCoord(glm::vec2(j * du, i * dv));
-			}
-			else
-			{
-				meshData.vertices[i * n + j].SetPos(glm::vec3(x, GetHeight(x, z), z));
-				meshData.vertices[i * n + j].SetNormal(GetNormal(x, z));
-				meshData.vertices[i * n + j].SetTexCoord(glm::vec2(j * du, i * dv));
-			}			
+			meshData.vertices[i * n + j].SetPos(glm::vec3(x, 0.0f, z));
+			meshData.vertices[i * n + j].SetNormal(glm::vec3(0.0f, 1.0f, 0.0f));
+			meshData.vertices[i * n + j].SetTexCoord(glm::vec2(j * du, i * dv));
 		}
 	}
 

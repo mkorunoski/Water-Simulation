@@ -3,6 +3,7 @@
 
 #include <string>
 #include <SDL2/SDL.h>
+#include <GL/glew.h>
 
 class Display
 {
@@ -12,6 +13,9 @@ public:
 	void Clear(float r, float g, float b, float a);
 	void SwapBuffers();
 	void SetWindowName(const std::string& name) const;
+	void RenderToTexture();
+	void RenderOnscreen();
+	GLuint GetFramebufferContent() { return m_renderedTexture; }
 
 	virtual ~Display();
 protected:
@@ -20,7 +24,12 @@ private:
 	Display(const Display& display) {}
 
 	SDL_Window* m_window;
+	int m_width;
+	int m_height;
 	SDL_GLContext m_glContext;
+
+	GLuint m_fbo;
+	GLuint m_renderedTexture;
 };
 
 #endif

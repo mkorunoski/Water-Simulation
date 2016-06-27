@@ -8,8 +8,9 @@ class Texture
 {
 public:
 	Texture(const std::string& fileName);
+	Texture(GLuint texture) : m_texture(texture) { }
 
-	void Bind(GLenum texture);
+	void Texture::Bind(GLuint program, const std::string& uName, int i);
 	void Unbind();
 
 	virtual ~Texture();
