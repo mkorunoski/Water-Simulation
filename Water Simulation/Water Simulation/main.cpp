@@ -109,6 +109,8 @@ int main(int argc, char** argv)
 		hillsTexture.Bind(groundShader.GetProgram(), "tex", 1);
 		ground.Draw();
 
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		waterShader.Bind();
 		waterShader.Update(transform, camera);
 		pointLight.Bind(waterShader.GetProgram());	
@@ -117,6 +119,7 @@ int main(int argc, char** argv)
 		skybox.Bind();
 		deformer.Update(0.1f * timer.TotalTime());		
 		water.Draw();
+		glDisable(GL_BLEND);
 
 		display.SwapBuffers();		
 		
