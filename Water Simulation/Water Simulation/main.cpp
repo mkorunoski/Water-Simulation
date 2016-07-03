@@ -55,11 +55,11 @@ int main(int argc, char** argv)
 		256);
 	
 	MeshData groundData;
-	Geometry::generateGrid(false, 100, 100, 100, 100, groundData);
+	Geometry::generateGrid(100, 100, 200, 200, groundData);
 	Mesh ground(groundData.vertices, groundData.vertices.size(), groundData.indices, groundData.indices.size());
 
 	MeshData waterData;
-	Geometry::generateGrid(true, 100, 100, 800, 800, waterData);
+	Geometry::generateGrid(100, 100, 400, 400, waterData);
 	Mesh water(waterData.vertices, waterData.vertices.size(), waterData.indices, waterData.indices.size());
 	WaterDeformer deformer(waterShader.GetProgram());
 	
@@ -84,32 +84,40 @@ int main(int argc, char** argv)
 			}				
 		}
 
-		display.Clear(0.0f, 0.0f, 0.0f, 1.0f);
+		display.Clear(0.0f, 0.0f, 0.0f, 1.0f);		
 
 		// camera.RotateView(50.0f, 0.1f * timer.TotalTime());
+
+		display.RenderSceneDepthToTexture();
 
 		groundShader.Bind();
 		groundShader.Update(transform, camera);
 		pointLight.Bind(groundShader.GetProgram());
 		groundMaterial.Bind(groundShader.GetProgram());
-		hillsHeightmap.Bind(GL_TEXTURE0);
-		hillsTexture.Bind(GL_TEXTURE1);
+		hillsHeightmap.Bind(groundShader.GetProgram(), "heightmap", 0);
+		hillsTexture.Bind(groundShader.GetProgram(), "tex", 1);
 		ground.Draw();
 
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		display.RenderOnscreen();
+		Texture depthTexture(display.GetSceneDepthTexture());
+
+		groundShader.Bind();
+		groundShader.Update(transform, camera);
+		pointLight.Bind(groundShader.GetProgram());
+		groundMaterial.Bind(groundShader.GetProgram());
+		hillsHeightmap.Bind(groundShader.GetProgram(), "heightmap", 0);
+		hillsTexture.Bind(groundShader.GetProgram(), "tex", 1);
+		ground.Draw();
 
 		waterShader.Bind();
 		waterShader.Update(transform, camera);
 		pointLight.Bind(waterShader.GetProgram());	
 		waterMaterial.Bind(waterShader.GetProgram());
-		waterHeightmap.Bind(GL_TEXTURE0);
+		depthTexture.Bind(waterShader.GetProgram(), "tex", 0);
 		skybox.Bind();
 		deformer.Update(0.1f * timer.TotalTime());		
-		water.Draw();		
+		water.Draw();
 
-		glDisable(GL_BLEND);
-		
 		display.SwapBuffers();		
 		
 		CalculateFrameStats(display);

@@ -1,4 +1,4 @@
-#version 420 core
+#version 330 core
 
 const vec2 SIZE    = vec2(2.0, 0.0);
 const ivec3 OFFSET = ivec3(-1, 0, 1);
@@ -15,7 +15,7 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 uniform mat4 inverseTranspose;
-layout (binding = 0) uniform sampler2D heightmap;
+uniform sampler2D heightmap;
 
 vec4 bumpFromHeight();
 

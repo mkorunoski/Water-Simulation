@@ -1,8 +1,8 @@
 #include "display.h"
-#include <GL/glew.h>
 #include <iostream>
+#include <vector>
 
-Display::Display(int width, int height, const std::string& title)
+Display::Display(int width, int height, const std::string& title) : m_width(width), m_height(height)
 {
 	SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -27,10 +27,27 @@ Display::Display(int width, int height, const std::string& title)
 
 	glEnable(GL_CULL_FACE);
 	glCullFace(GL_BACK);
+
+	glGenFramebuffers(1, &m_fbo);		
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
+
+	GenTextures();
+
+	glGenRenderbuffers(1, &m_dbo);	
+	glBindRenderbuffer(GL_RENDERBUFFER, m_dbo);
+	glRenderbufferStorage(GL_RENDERBUFFER, GL_DEPTH_COMPONENT, m_width, m_height);
+	glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, m_dbo);
+
+	glFramebufferTexture(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, m_sceneDepthTexture, 0);
+	GLenum DrawBuffers[1] = { GL_COLOR_ATTACHMENT0 };
+	glDrawBuffers(1, DrawBuffers);
 }
 
 Display::~Display()
 {
+	glDeleteRenderbuffers(1, &m_dbo);
+	glDeleteFramebuffers(1, &m_fbo);
+
 	SDL_GL_DeleteContext(m_glContext);
 	SDL_DestroyWindow(m_window);
 	SDL_Quit();
@@ -50,4 +67,44 @@ void Display::SwapBuffers()
 void Display::SetWindowName(const std::string& name) const
 {
 	SDL_SetWindowTitle(m_window, name.c_str());
+}
+
+void Display::RenderSceneToTexture()
+{
+	
+}
+
+void Display::RenderSceneDepthToTexture()
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, m_fbo);
+}
+
+void Display::RenderOnscreen()
+{
+	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
+}
+
+void Display::GenTextures()
+{
+	// Scene texture
+	/*glGenTextures(1, &m_sceneTexture);
+	glBindTexture(GL_TEXTURE_2D, m_sceneTexture);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_width, m_height, 0, GL_RGB, GL_UNSIGNED_BYTE, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);*/
+
+	// Scene depth texture
+	glGenTextures(1, &m_sceneDepthTexture);
+	glBindTexture(GL_TEXTURE_2D, m_sceneDepthTexture);
+
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, m_width, m_height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, 0);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

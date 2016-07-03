@@ -9,12 +9,12 @@ class WaterDeformer
 public:
 	WaterDeformer(GLuint program)
 	{
-		uTime		= glGetUniformLocation(program, "time");
-		uNumWaves	= glGetUniformLocation(program, "numWaves");
-		uAmplitude	= glGetUniformLocation(program, "amplitude");
-		uWavelength = glGetUniformLocation(program, "wavelength");
-		uSpeed		= glGetUniformLocation(program, "speed");
-		uDirection	= glGetUniformLocation(program, "direction");
+		uTime		= glGetUniformLocation(program, "waterDeformer.time");
+		uNumWaves	= glGetUniformLocation(program, "waterDeformer.numWaves");
+		uAmplitude	= glGetUniformLocation(program, "waterDeformer.amplitude");
+		uWavelength = glGetUniformLocation(program, "waterDeformer.wavelength");
+		uSpeed		= glGetUniformLocation(program, "waterDeformer.speed");
+		uDirection	= glGetUniformLocation(program, "waterDeformer.direction");
 
 		for (int i = 0; i < SIZE; ++i)
 		{

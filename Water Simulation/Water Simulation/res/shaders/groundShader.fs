@@ -1,4 +1,4 @@
-#version 420 core
+#version 330 core
 
 struct PointLight
 {
@@ -22,7 +22,7 @@ in vec3 f_position;
 in vec2 f_texCoord;
 in vec3 f_normal;
 
-layout (binding = 1) uniform sampler2D sampler;
+uniform sampler2D tex;
 
 uniform PointLight pointLight;
 uniform Material material;
@@ -39,7 +39,7 @@ void main()
 	vec4 specular;
 	computePointLight(diffuse, specular);
 
-	vec4 sampledColor = texture2D(sampler, f_texCoord);
+	vec4 sampledColor = texture2D(tex, f_texCoord);
 	fragColor = sampledColor * (diffuse + specular);
 }
 
