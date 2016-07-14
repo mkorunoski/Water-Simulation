@@ -41,12 +41,12 @@ void CalculateFrameStats(const Display& display)
 int main(int argc, char ** argv)
 {	
 	Display display(WND_NAME, wndWidth, wndHeight);
-	Camera camera(glm::vec3(0.0f, 10.0f, -50.0f));
+	Camera camera(glm::vec3(0.0f, 4.0f, -25.0f));
 
 	EventHandler eventHandler;
 	
 	Renderer renderer(&camera, wndWidth, wndHeight);
-	
+
 	timer.Reset();
 	SDL_Event e;	
 	while (true)
@@ -62,6 +62,9 @@ int main(int argc, char ** argv)
 			{
 				switch (e.key.keysym.sym)
 				{
+				case SDLK_1: glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); break;
+				case SDLK_2: glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); break;
+
 				case SDLK_a: eventHandler.KeyPressed(KEY_LEFT);  break;
 				case SDLK_d: eventHandler.KeyPressed(KEY_RIGHT); break;
 				case SDLK_w: eventHandler.KeyPressed(KEY_UP);	 break;

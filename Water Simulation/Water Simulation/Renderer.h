@@ -81,8 +81,8 @@ private:
 	void SetupLights()
 	{
 		directionalLight = DirectionalLight(
-			glm::vec3(0.1f), glm::vec3(0.8f), glm::vec3(1.0f),
-			glm::vec3(0.0f, 25.0f, 25.0f));
+			glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f),
+			glm::vec3(-50.0f, 20.0f, 0.0f));
 	}
 
 	void ActivateDirectionalLights(Shader& shader)
@@ -105,9 +105,9 @@ private:
 
 		Geometry::GenerateCube(vertices);
 		skyboxMesh = Mesh(vertices);
-		Geometry::GeneratePlane(100, 100, 400, 400, waterVertices, waterIndices);
+		Geometry::GeneratePlane(50, 50, 200, 200, waterVertices, waterIndices);
 		waterMesh  = Mesh(waterVertices, waterIndices);
-		Geometry::GeneratePlane(100, 100, 2, 2, vertices, indices);
+		Geometry::GeneratePlane(50, 50, 2, 2, vertices, indices);
 		floorMesh  = Mesh(vertices, indices);
 
 		skyboxTransformation = Transformation();
@@ -178,22 +178,23 @@ public:
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(camera->GetViewMatrix()));
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-		//// Skybox		
-		//skyboxTransformation.Scale(glm::vec3(500.0f));
-		//skyboxTransformation.Translate(camera->GetEyePos());
-		//skyboxShader.Use();
-		//	glUniformMatrix4fv(UniformLoc::MODEL, 1, false, glm::value_ptr(skyboxTransformation.GetModel()));
-		//	glFrontFace(GL_CW);
-		//	skyboxTex.Use();
-		//	skyboxMesh.DrawArrays();
-		//	skyboxTex.Unuse();
-		//	glFrontFace(GL_CCW);
-		//skyboxShader.Unuse();
+		// Skybox		
+		skyboxTransformation.Scale(glm::vec3(500.0f));
+		skyboxTransformation.Translate(camera->GetEyePos());
+		skyboxShader.Use();
+			glUniformMatrix4fv(UniformLoc::MODEL, 1, false, glm::value_ptr(skyboxTransformation.GetModel()));
+			glFrontFace(GL_CW);
+			skyboxTex.Use();
+			skyboxMesh.DrawArrays();
+			skyboxTex.Unuse();
+			glFrontFace(GL_CCW);
+		skyboxShader.Unuse();
 
 		// Lights
 		AcivateLights(defaultShader);
 
 		// Floor
+		floorTransformation.Translate(glm::vec3(0.0f, -2.0f, 0.0f));
 		defaultShader.Use();
 			glUniform3fv(UniformLoc::EYE_POSITION, 1, glm::value_ptr(camera->GetEyePos()));
 			glUniformMatrix4fv(UniformLoc::MODEL, 1, false, glm::value_ptr(floorTransformation.GetModel()));
@@ -216,6 +217,7 @@ private:
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		waterTransformation.Translate(glm::vec3(0.0f, 2.0f, 0.0f));
 		waveGeneratorGPUShader.Use();
 			glUniform3fv(UniformLoc::EYE_POSITION, 1, glm::value_ptr(camera->GetEyePos()));
@@ -226,6 +228,7 @@ private:
 			skyboxTex.Use();
 			waterMesh.DrawElements();
 		waveGeneratorGPUShader.Unuse();
+
 		glDisable(GL_BLEND);
 	}
 
@@ -239,6 +242,7 @@ private:
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		waterTransformation.Translate(glm::vec3(0.0f, 2.0f, 0.0f));
 		waveGeneratorCPUShader.Use();
 			glUniform3fv(UniformLoc::EYE_POSITION, 1, glm::value_ptr(camera->GetEyePos()));
@@ -248,6 +252,7 @@ private:
 			skyboxTex.Use();
 			waterMesh.DrawElements();
 		waveGeneratorCPUShader.Unuse();
+
 		glDisable(GL_BLEND);
 	}
 

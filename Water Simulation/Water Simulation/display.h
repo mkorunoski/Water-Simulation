@@ -39,6 +39,7 @@ public:
 		glEnable(GL_DEPTH_TEST);	
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
+		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	}
 
 	void Clear(GLfloat r, GLfloat g, GLfloat b, GLfloat a)

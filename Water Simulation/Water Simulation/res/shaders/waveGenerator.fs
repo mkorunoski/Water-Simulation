@@ -78,7 +78,7 @@ vec3 SampleCubemap()
 }
 
 const vec3 WATER_BLUE = vec3(64.0f/255.0f, 164.0f/255.0f, 223.0f/255.0f);
-const float factor = 0.4f;
+const float factor = 0.6f;
 
 void main()
 {	
@@ -89,7 +89,7 @@ void main()
 	
     fragColor =
     	(ambient + diffuse)
-    	* vec4((SampleCubemap() * factor + WATER_BLUE * (1.0f - factor)), 0.5f)
+    	* vec4((SampleCubemap() * factor + WATER_BLUE * (1.0f - factor)), 0.6f)
     	+ specular;
 }
 
