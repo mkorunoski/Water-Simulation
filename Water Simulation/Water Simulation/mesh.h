@@ -1,71 +1,166 @@
-#ifndef MESH_INCLUDED_H
-#define MESH_INCLUDED_H
+#ifndef MESH_H
+#define MESH_H
 
+#include <vector>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
-#include <string>
-#include <vector>
-#include "obj_loader.h"
 
-struct Vertex
+const GLuint POSITION_LENGTH	= 3;
+const GLuint NORMAL_LENGTH		= 3;
+const GLuint TEX_COORDS_LENGTH	= 2;
+const GLuint TANGENG_LENGTH		= 3;
+const GLuint VERTEX_LENGTH		= POSITION_LENGTH + NORMAL_LENGTH + TEX_COORDS_LENGTH + TANGENG_LENGTH;
+
+enum ATTRIBUTE_LOCATION
 {
-public:
+	POSITION = 0,
+	NORMAL,	
+	TEX_COORDS,
+	TANGENT
+};
+
+typedef struct Vertex
+{	
+	glm::vec3 position;
+	glm::vec3 normal;	
+	glm::vec2 texCoords;
+	glm::vec3 tangent;
+
 	Vertex()
 	{
-		pos = glm::vec3(0.0f);
-		texCoord = glm::vec2(0.0f);
-		normal = glm::vec3(0.0f);
+		position	= glm::vec3(0.0f);
+		normal		= glm::vec3(0.0f);
+		texCoords	= glm::vec2(0.0f);
+		tangent		= glm::vec3(0.0f);
 	}
 
-	Vertex(const glm::vec3& pos, const glm::vec2& texCoord, const glm::vec3& normal)
+	Vertex(const glm::vec3& position, const glm::vec3& normal, const glm::vec2& texCoords, const glm::vec3& tangent)
 	{
-		this->pos = pos;
-		this->texCoord = texCoord;
-		this->normal = normal;
+		this->position	= position;
+		this->normal	= normal;
+		this->texCoords = texCoords;
+		this->tangent	= tangent;
 	}
-
-	glm::vec3* GetPos() { return &pos; }
-	glm::vec2* GetTexCoord() { return &texCoord; }
-	glm::vec3* GetNormal() { return &normal; }
-
-	void SetPos(const glm::vec3& pos) { this->pos = pos; }
-	void SetTexCoord(const glm::vec2& texCoord) { this->texCoord = texCoord; }
-	void SetNormal(const glm::vec3& normal) { this->normal = normal; }
-
-private:
-	glm::vec3 pos;
-	glm::vec2 texCoord;
-	glm::vec3 normal;
-};
-
-enum MeshBufferPositions
-{
-	POSITION_VB,
-	TEXCOORD_VB,
-	NORMAL_VB,
-	INDEX_VB
-};
+} Vertex;
 
 class Mesh
 {
-public:
-    Mesh(const std::string& fileName);
-	Mesh(std::vector<Vertex>& vertices, unsigned int numVertices, std::vector<int>& indices, unsigned int numIndices);
-
-	void Draw();
-
-	virtual ~Mesh();
-protected:
 private:
-	static const unsigned int NUM_BUFFERS = 4;
-	void operator=(const Mesh& mesh) {}
-	Mesh(const Mesh& mesh) {}
+	GLuint VAO;
+	GLuint VBO, EBO;
+	GLuint numIndices;
+	GLuint numVertices;
+	
+	void AttributePointers()
+	{
+		glVertexAttribPointer(ATTRIBUTE_LOCATION::POSITION,
+			POSITION_LENGTH,
+			GL_FLOAT, GL_FALSE,
+			VERTEX_LENGTH * sizeof(GLfloat),
+			(const GLvoid*)offsetof(Vertex, position));
+		glEnableVertexAttribArray(ATTRIBUTE_LOCATION::POSITION);
 
-    void InitMesh(const IndexedModel& model);
+		glVertexAttribPointer(ATTRIBUTE_LOCATION::NORMAL,
+			NORMAL_LENGTH,
+			GL_FLOAT, GL_FALSE,
+			VERTEX_LENGTH * sizeof(GLfloat),
+			(const GLvoid*)offsetof(Vertex, normal));
+		glEnableVertexAttribArray(ATTRIBUTE_LOCATION::NORMAL);
 
-	GLuint m_vertexArrayObject;
-	GLuint m_vertexArrayBuffers[NUM_BUFFERS];
-	unsigned int m_numIndices;
+		glVertexAttribPointer(ATTRIBUTE_LOCATION::TEX_COORDS,
+			TEX_COORDS_LENGTH,
+			GL_FLOAT, GL_FALSE,
+			VERTEX_LENGTH * sizeof(GLfloat),
+			(const GLvoid*)offsetof(Vertex, texCoords));
+		glEnableVertexAttribArray(ATTRIBUTE_LOCATION::TEX_COORDS);
+
+		glVertexAttribPointer(ATTRIBUTE_LOCATION::TANGENT,
+			TANGENG_LENGTH,
+			GL_FLOAT, GL_FALSE,
+			VERTEX_LENGTH * sizeof(GLfloat),
+			(const GLvoid*)offsetof(Vertex, tangent));
+		glEnableVertexAttribArray(ATTRIBUTE_LOCATION::TANGENT);
+	}
+
+public:
+	Mesh() { }
+
+	Mesh& operator=(const Mesh& mesh)
+	{
+		VAO = mesh.VAO;
+		VBO = mesh.VBO;
+		EBO = mesh.EBO;
+		numIndices  = mesh.numIndices;
+		numVertices = mesh.numVertices;
+		return *this;
+	}
+
+	Mesh(const std::vector<Vertex>& vertices)
+	{
+		numVertices = vertices.size();
+
+		glGenVertexArrays(1, &VAO);
+		glBindVertexArray(VAO);
+
+		glGenBuffers(1, &VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
+		
+		AttributePointers();
+
+		glBindVertexArray(0);
+	}
+
+	Mesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices)
+	{
+		numVertices = vertices.size();
+		numIndices = indices.size();		
+
+		glGenVertexArrays(1, &VAO);
+		glBindVertexArray(VAO);
+
+		glGenBuffers(1, &VBO);
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), &vertices[0], GL_DYNAMIC_DRAW);
+
+		glGenBuffers(1, &EBO);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+		glBufferData(GL_ELEMENT_ARRAY_BUFFER, numIndices * sizeof(GLuint), &indices[0], GL_STATIC_DRAW);
+
+		AttributePointers();
+
+		glBindVertexArray(0);
+	}
+
+	void UpdateBufferData(std::vector<Vertex>& vertices)
+	{
+		numVertices = vertices.size();
+
+		glBindBuffer(GL_ARRAY_BUFFER, VBO);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, numVertices * sizeof(Vertex), &vertices[0]);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);		
+	}
+
+	void DrawElements()
+	{
+		glBindVertexArray(VAO);
+		glDrawElements(GL_TRIANGLES, numIndices, GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+	}
+
+	void DrawArrays()
+	{
+		glBindVertexArray(VAO);
+		glDrawArrays(GL_TRIANGLES, 0, numVertices);
+		glBindVertexArray(0);
+	}
+
+	~Mesh()
+	{
+		// glDeleteBuffers(1, &EBO);
+		// glDeleteBuffers(1, &VBO);
+		// glDeleteVertexArrays(1, &VAO);		
+	}
 };
 
 #endif

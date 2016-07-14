@@ -1,42 +1,68 @@
-#ifndef DISPLAY_INCLUDED_H
-#define DISPLAY_INCLUDED_H
+#ifndef DISPLAY_H
+#define DISPLAY_H
 
-#include <string>
 #include <SDL2/SDL.h>
 #include <GL/glew.h>
+#include "Shader.h"
 
 class Display
 {
-public:
-	Display(int width, int height, const std::string& title);
-
-	void Clear(float r, float g, float b, float a);
-	void SwapBuffers();
-	void SetWindowName(const std::string& name) const;
-
-	void RenderSceneToTexture();
-	void RenderSceneDepthToTexture();
-	void RenderOnscreen();
-	//GLuint GetSceneTexture() { return m_sceneTexture; }
-	GLuint GetSceneDepthTexture() { return m_sceneDepthTexture; }
-
-	virtual ~Display();
-protected:
 private:
-	void operator=(const Display& display) {}
-	Display(const Display& display) {}
+	SDL_Window* window;
+	SDL_GLContext glContext;
+	GLuint width;
+	GLuint height;
 
-	void GenTextures();
+public:
+	Display(const std::string& wndName, GLuint width, GLuint height)
+	{
+		this->width = width;
+		this->height = height;
 
-	SDL_Window* m_window;
-	int m_width;
-	int m_height;
-	SDL_GLContext m_glContext;
+		SDL_Init(SDL_INIT_EVERYTHING);
+		SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+		SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 
-	GLuint m_fbo;
-	GLuint m_dbo;
-	//GLuint m_sceneTexture;
-	GLuint m_sceneDepthTexture;
+		SDL_SetRelativeMouseMode(SDL_TRUE);
+
+		window = SDL_CreateWindow(wndName.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
+		glContext = SDL_GL_CreateContext(window);
+		
+		glewInit();
+
+		glViewport(0, 0, width, height);
+		glEnable(GL_DEPTH_TEST);	
+		glEnable(GL_CULL_FACE);
+		glFrontFace(GL_CCW);
+	}
+
+	void Clear(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
+	{
+		glClearColor(r, g, b , a);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+	}
+
+	void SwapBuffers()
+	{
+		SDL_GL_SwapWindow(window);
+	}
+
+	void SetWindowName(std::string& wndName) const
+	{
+		SDL_SetWindowTitle(window, wndName.c_str());
+	}
+	
+	~Display()
+	{
+		SDL_GL_DeleteContext(glContext);
+		SDL_DestroyWindow(window);
+		SDL_Quit();
+	}
 };
 
 #endif

@@ -11,7 +11,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{B4EE1D1C-0B15-4A19-A3E6-C9AFA0C1BABD}</ProjectGuid>
+    <ProjectGuid>{CDE43493-AC86-4F5C-AD06-EB122B61F46B}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>WaterSimulation</RootNamespace>
   </PropertyGroup>
@@ -58,7 +58,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>.\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;SDL2test.lib;SOIL.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -79,33 +79,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="CubemapTexure.cpp" />
-    <ClCompile Include="display.cpp" />
     <ClCompile Include="GameTimer.cpp" />
-    <ClCompile Include="geometry.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="mesh.cpp" />
-    <ClCompile Include="obj_loader.cpp" />
-    <ClCompile Include="shader.cpp" />
-    <ClCompile Include="stb_image.c" />
-    <ClCompile Include="texture.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="camera.h" />
-    <ClInclude Include="CubemapTexure.h" />
-    <ClInclude Include="debugTimer.h" />
-    <ClInclude Include="display.h" />
+    <ClInclude Include="Camera.h" />
+    <ClInclude Include="CubemapTexture.h" />
+    <ClInclude Include="Display.h" />
+    <ClInclude Include="EventHandler.h" />
     <ClInclude Include="GameTimer.h" />
-    <ClInclude Include="geometry.h" />
+    <ClInclude Include="Geometry.h" />
     <ClInclude Include="Light.h" />
-    <ClInclude Include="mesh.h" />
-    <ClInclude Include="obj_loader.h" />
-    <ClInclude Include="shader.h" />
-    <ClInclude Include="stb_image.h" />
-    <ClInclude Include="texture.h" />
-    <ClInclude Include="transform.h" />
-    <ClInclude Include="util.h" />
-    <ClInclude Include="WaterDeformer.h" />
+    <ClInclude Include="Material.h" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Renderer.h" />
+    <ClInclude Include="Shader.h" />
+    <ClInclude Include="Texture.h" />
+    <ClInclude Include="Transformation.h" />
+    <ClInclude Include="WaveGenerators.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
