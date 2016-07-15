@@ -28,7 +28,7 @@ public:
 		int textureWidth, textureHeight;
 		unsigned char* image;
 		for (int i = 0; i < 6; ++i)
-		{			
+		{
 			image = SOIL_load_image((baseName + sides[i] + "." + format).c_str(), &textureWidth, &textureHeight, 0, SOIL_LOAD_RGBA);
 
 			if (image == NULL)
@@ -47,7 +47,7 @@ public:
 	}
 
 	void Use()
-	{		
+	{
 		glActiveTexture(GL_TEXTURE10);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, texture);
 	}

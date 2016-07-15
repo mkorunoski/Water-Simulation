@@ -5,41 +5,41 @@
 #include <GL/glew.h>
 #include <glm/glm.hpp>
 
-const GLuint POSITION_LENGTH	= 3;
-const GLuint NORMAL_LENGTH		= 3;
-const GLuint TEX_COORDS_LENGTH	= 2;
-const GLuint TANGENG_LENGTH		= 3;
-const GLuint VERTEX_LENGTH		= POSITION_LENGTH + NORMAL_LENGTH + TEX_COORDS_LENGTH + TANGENG_LENGTH;
+const GLuint POSITION_LENGTH = 3;
+const GLuint NORMAL_LENGTH = 3;
+const GLuint TEX_COORDS_LENGTH = 2;
+const GLuint TANGENG_LENGTH = 3;
+const GLuint VERTEX_LENGTH = POSITION_LENGTH + NORMAL_LENGTH + TEX_COORDS_LENGTH + TANGENG_LENGTH;
 
 enum ATTRIBUTE_LOCATION
 {
 	POSITION = 0,
-	NORMAL,	
+	NORMAL,
 	TEX_COORDS,
 	TANGENT
 };
 
 typedef struct Vertex
-{	
+{
 	glm::vec3 position;
-	glm::vec3 normal;	
+	glm::vec3 normal;
 	glm::vec2 texCoords;
 	glm::vec3 tangent;
 
 	Vertex()
 	{
-		position	= glm::vec3(0.0f);
-		normal		= glm::vec3(0.0f);
-		texCoords	= glm::vec2(0.0f);
-		tangent		= glm::vec3(0.0f);
+		position = glm::vec3(0.0f);
+		normal = glm::vec3(0.0f);
+		texCoords = glm::vec2(0.0f);
+		tangent = glm::vec3(0.0f);
 	}
 
 	Vertex(const glm::vec3& position, const glm::vec3& normal, const glm::vec2& texCoords, const glm::vec3& tangent)
 	{
-		this->position	= position;
-		this->normal	= normal;
+		this->position = position;
+		this->normal = normal;
 		this->texCoords = texCoords;
-		this->tangent	= tangent;
+		this->tangent = tangent;
 	}
 } Vertex;
 
@@ -50,7 +50,7 @@ private:
 	GLuint VBO, EBO;
 	GLuint numIndices;
 	GLuint numVertices;
-	
+
 	void AttributePointers()
 	{
 		glVertexAttribPointer(ATTRIBUTE_LOCATION::POSITION,
@@ -90,7 +90,7 @@ public:
 		VAO = mesh.VAO;
 		VBO = mesh.VBO;
 		EBO = mesh.EBO;
-		numIndices  = mesh.numIndices;
+		numIndices = mesh.numIndices;
 		numVertices = mesh.numVertices;
 		return *this;
 	}
@@ -105,7 +105,7 @@ public:
 		glGenBuffers(1, &VBO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, numVertices * sizeof(Vertex), &vertices[0], GL_STATIC_DRAW);
-		
+
 		AttributePointers();
 
 		glBindVertexArray(0);
@@ -114,7 +114,7 @@ public:
 	Mesh(const std::vector<Vertex>& vertices, const std::vector<GLuint>& indices)
 	{
 		numVertices = vertices.size();
-		numIndices = indices.size();		
+		numIndices = indices.size();
 
 		glGenVertexArrays(1, &VAO);
 		glBindVertexArray(VAO);
@@ -138,7 +138,7 @@ public:
 
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferSubData(GL_ARRAY_BUFFER, 0, numVertices * sizeof(Vertex), &vertices[0]);
-		glBindBuffer(GL_ARRAY_BUFFER, 0);		
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 	}
 
 	void DrawElements()

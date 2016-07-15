@@ -25,17 +25,17 @@ private:
 public:
 	Transformation()
 	{
-		scale	  = glm::scale(glm::vec3(1.0f, 1.0f, 1.0f));
-		rotate	  = glm::rotate(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
+		scale = glm::scale(glm::vec3(1.0f, 1.0f, 1.0f));
+		rotate = glm::rotate(0.0f, glm::vec3(0.0f, 1.0f, 0.0f));
 		translate = glm::translate(glm::vec3(0.0f, 0.0f, 0.0f));
 		UpdateModelMatrix();
 	}
 
 	Transformation& operator=(const Transformation& transformation)
 	{
-		scale		= transformation.scale;
-		rotate		= transformation.rotate;
-		translate	= transformation.translate;
+		scale = transformation.scale;
+		rotate = transformation.rotate;
+		translate = transformation.translate;
 
 		modelMatrix = transformation.modelMatrix;
 		return *this;

@@ -5,10 +5,10 @@
 #include <GL/glew.h>
 #include "Camera.h"
 
-const std::string KEY_LEFT	= "SDLK_LEFT";
+const std::string KEY_LEFT = "SDLK_LEFT";
 const std::string KEY_RIGHT = "SDLK_RIGHT";
-const std::string KEY_UP	= "SDLK_UP";
-const std::string KEY_DOWN	= "SDLK_DOWN";
+const std::string KEY_UP = "SDLK_UP";
+const std::string KEY_DOWN = "SDLK_DOWN";
 const std::string MOUSE_MOTION = "SDL_MOUSEMOTION";
 
 class EventHandler
@@ -28,14 +28,14 @@ public:
 
 	void KeyPressed(const std::string& key)	 { map[key] = true; }
 	void KeyReleased(const std::string& key) { map[key] = false; }
-		
+
 	void Process(Camera* camera, GLfloat deltaTime, GLfloat xpos, GLfloat ypos)
 	{
 		if (map[KEY_LEFT] == true)	camera->ProcessKeyboard(LEFT, deltaTime);
 		if (map[KEY_RIGHT] == true) camera->ProcessKeyboard(RIGHT, deltaTime);
 		if (map[KEY_UP] == true)	camera->ProcessKeyboard(FORWARD, deltaTime);
-		if (map[KEY_DOWN] == true)	camera->ProcessKeyboard(BACKWARD, deltaTime);		
-		
+		if (map[KEY_DOWN] == true)	camera->ProcessKeyboard(BACKWARD, deltaTime);
+
 		camera->ProcessMouseMovement(xpos, -ypos);
 	}
 

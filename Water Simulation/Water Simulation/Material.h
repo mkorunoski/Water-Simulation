@@ -6,7 +6,7 @@
 #include <glm/gtc/type_ptr.hpp>
 
 class Material
-{	
+{
 private:
 	glm::vec3 ambient;
 	glm::vec3 diffuse;
@@ -18,9 +18,9 @@ public:
 
 	Material& operator=(const Material& material)
 	{
-		ambient   = material.ambient;
-		diffuse   = material.diffuse;
-		specular  = material.specular;
+		ambient = material.ambient;
+		diffuse = material.diffuse;
+		specular = material.specular;
 		shininess = material.shininess;
 		return *this;
 	}

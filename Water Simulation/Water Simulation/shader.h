@@ -16,7 +16,7 @@ private:
 	GLuint program;
 
 	std::string shaderName;
-	
+
 	GLuint CompileShader(const std::string& path, GLuint shaderType, const std::string& name)
 	{
 		std::string code;
@@ -52,7 +52,7 @@ private:
 		glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 		if (!success)
 		{
-			glGetShaderInfoLog(shader, 512, NULL, infoLog);			
+			glGetShaderInfoLog(shader, 512, NULL, infoLog);
 			std::cout << "ERROR::SHADER:" + shaderName + ":" + name + "::COMPILATION_FAILED\n" << infoLog << std::endl;
 		}
 
@@ -86,9 +86,9 @@ public:
 
 	Shader& operator=(const Shader& shader)
 	{
-		vertex	 = shader.vertex;		
+		vertex = shader.vertex;
 		fragment = shader.fragment;
-		program  = shader.program;
+		program = shader.program;
 		shaderName.assign(shader.shaderName);
 		return *this;
 	}
@@ -98,12 +98,12 @@ public:
 	Shader(const GLchar* vertexPath, const GLchar* fragmentPath, const std::string& shaderName)
 	{
 		this->shaderName.assign(shaderName);
-		vertex	 = CompileShader(vertexPath, GL_VERTEX_SHADER, "VERTEX");
+		vertex = CompileShader(vertexPath, GL_VERTEX_SHADER, "VERTEX");
 		fragment = CompileShader(fragmentPath, GL_FRAGMENT_SHADER, "FRAGMENT");
 
 		LinkProgram(new GLuint[] {vertex, fragment}, 2);
 	}
-		
+
 	void Use()
 	{
 		glUseProgram(program);

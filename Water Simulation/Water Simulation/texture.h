@@ -23,7 +23,7 @@ public:
 	{
 		int textureWidth, textureHeight;
 		unsigned char* image = SOIL_load_image(textureLocation.c_str(), &textureWidth, &textureHeight, 0, SOIL_LOAD_RGBA);
-		
+
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, textureHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, image);
@@ -39,7 +39,7 @@ public:
 	{
 		glUniform1i(glGetUniformLocation(program, name.c_str()), i);
 		glActiveTexture(GL_TEXTURE0 + i);
-		glBindTexture(GL_TEXTURE_2D, texture);		
+		glBindTexture(GL_TEXTURE_2D, texture);
 	}
 
 	void Unuse()

@@ -27,13 +27,13 @@ public:
 
 	DirectionalLight& operator=(const DirectionalLight& light)
 	{
-		ambient   = light.ambient;
-		diffuse   = light.diffuse;
-		specular  = light.specular;
-		position  = light.position;
+		ambient = light.ambient;
+		diffuse = light.diffuse;
+		specular = light.specular;
+		position = light.position;
 
-		uAmbient  = light.uAmbient;
-		uDiffuse  = light.uDiffuse;
+		uAmbient = light.uAmbient;
+		uDiffuse = light.uDiffuse;
 		uSpecular = light.uSpecular;
 		uPosition = light.uPosition;
 		return *this;
@@ -42,16 +42,16 @@ public:
 	DirectionalLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular,
 		const glm::vec3& position)
 	{
-		this->ambient  = ambient;
-		this->diffuse  = diffuse;
+		this->ambient = ambient;
+		this->diffuse = diffuse;
 		this->specular = specular;
 		this->position = position;
 	}
 
-	void SetUniforms(const GLuint& program)
+	void FindUniformLocations(const GLuint& program)
 	{
-		uAmbient  = glGetUniformLocation(program, "directionalLight.light.ambient");
-		uDiffuse  = glGetUniformLocation(program, "directionalLight.light.diffuse");
+		uAmbient = glGetUniformLocation(program, "directionalLight.light.ambient");
+		uDiffuse = glGetUniformLocation(program, "directionalLight.light.diffuse");
 		uSpecular = glGetUniformLocation(program, "directionalLight.light.specular");
 		uPosition = glGetUniformLocation(program, "directionalLight.light.position");
 	}
@@ -85,55 +85,55 @@ private:
 	glm::vec3 diffuse;
 	glm::vec3 specular;
 	glm::vec3 position;
-	float constant;
-	float linear;
-	float quadratic;
+	GLfloat constant;
+	GLfloat linear;
+	GLfloat quadratic;
 
 	GLuint uAmbient, uDiffuse, uSpecular, uPosition, uConstant, uLinear, uQuadratic;
-	
+
 public:
 	PointLight() { }
 
 	PointLight& operator=(const PointLight& light)
 	{
-		ambient   = light.ambient;
-		diffuse   = light.diffuse;
-		specular  = light.specular;
-		position  = light.position;
-		constant  = light.constant;
-		linear    = light.linear;
+		ambient = light.ambient;
+		diffuse = light.diffuse;
+		specular = light.specular;
+		position = light.position;
+		constant = light.constant;
+		linear = light.linear;
 		quadratic = light.quadratic;
 
-		uAmbient   = light.uAmbient;
-		uDiffuse   = light.uDiffuse;
-		uSpecular  = light.uSpecular;
-		uPosition  = light.uPosition;
-		uConstant  = light.uConstant;
-		uLinear    = light.uLinear;
+		uAmbient = light.uAmbient;
+		uDiffuse = light.uDiffuse;
+		uSpecular = light.uSpecular;
+		uPosition = light.uPosition;
+		uConstant = light.uConstant;
+		uLinear = light.uLinear;
 		uQuadratic = light.uQuadratic;
 		return *this;
 	}
 
 	PointLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular,
-		const glm::vec3& position, float constant, float linear, float quadratic)
+		const glm::vec3& position, GLfloat constant, GLfloat linear, GLfloat quadratic)
 	{
-		this->ambient   = ambient;
-		this->diffuse   = diffuse;
-		this->specular  = specular;
-		this->position  = position;
-		this->constant  = constant;
-		this->linear    = linear;
+		this->ambient = ambient;
+		this->diffuse = diffuse;
+		this->specular = specular;
+		this->position = position;
+		this->constant = constant;
+		this->linear = linear;
 		this->quadratic = quadratic;
 	}
 
 	void SetUniforms(const GLuint& program, int light)
 	{
-		uAmbient   = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].light.ambient").c_str());
-		uDiffuse   = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].light.diffuse").c_str());
-		uSpecular  = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].light.specular").c_str());
-		uPosition  = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].light.position").c_str());
-		uConstant  = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].constant").c_str());
-		uLinear	   = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].linear").c_str());
+		uAmbient = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].light.ambient").c_str());
+		uDiffuse = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].light.diffuse").c_str());
+		uSpecular = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].light.specular").c_str());
+		uPosition = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].light.position").c_str());
+		uConstant = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].constant").c_str());
+		uLinear = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].linear").c_str());
 		uQuadratic = glGetUniformLocation(program, ("pointLight[" + Str(light) + "].quadratic").c_str());
 	}
 
@@ -165,8 +165,8 @@ private:
 
 	glm::vec3 position;
 	glm::vec3 direction;
-	float cutOff;
-	float outerCutOff;
+	GLfloat cutOff;
+	GLfloat outerCutOff;
 
 	GLuint uAmbient, uDiffuse, uSpecular, uPosition, uDirection, uCutOff, uOuterCutOff;
 
@@ -175,47 +175,47 @@ public:
 
 	SpotLight& operator=(const SpotLight& light)
 	{
-		ambient		= light.ambient;
-		diffuse		= light.diffuse;
-		specular	= light.specular;
-		position	= light.position;
-		direction	= light.direction;
-		cutOff		= light.cutOff;
+		ambient = light.ambient;
+		diffuse = light.diffuse;
+		specular = light.specular;
+		position = light.position;
+		direction = light.direction;
+		cutOff = light.cutOff;
 		outerCutOff = light.outerCutOff;
 
-		uAmbient	 = light.uAmbient;
-		uDiffuse	 = light.uDiffuse;
-		uSpecular	 = light.uSpecular;
-		uPosition	 = light.uPosition;
-		uDirection	 = light.uDirection;
-		uCutOff		 = light.uCutOff;
+		uAmbient = light.uAmbient;
+		uDiffuse = light.uDiffuse;
+		uSpecular = light.uSpecular;
+		uPosition = light.uPosition;
+		uDirection = light.uDirection;
+		uCutOff = light.uCutOff;
 		uOuterCutOff = light.uOuterCutOff;
 		return *this;
 	}
 
 	SpotLight(const glm::vec3& ambient, const glm::vec3& diffuse, const glm::vec3& specular,
-		const glm::vec3& position, const glm::vec3& direction, float cutOff, float outerCutOff)
+		const glm::vec3& position, const glm::vec3& direction, GLfloat cutOff, GLfloat outerCutOff)
 	{
-		this->ambient	  = ambient;
-		this->diffuse	  = diffuse;
-		this->specular	  = specular;
-		this->position	  = position;
-		this->direction	  = direction;
-		this->cutOff	  = cutOff;
+		this->ambient = ambient;
+		this->diffuse = diffuse;
+		this->specular = specular;
+		this->position = position;
+		this->direction = direction;
+		this->cutOff = cutOff;
 		this->outerCutOff = outerCutOff;
 	}
 
 	void SetUniforms(const GLuint& program)
 	{
-		uAmbient	 = glGetUniformLocation(program, "spotLight.light.ambient");
-		uDiffuse	 = glGetUniformLocation(program, "spotLight.light.diffuse");
-		uSpecular	 = glGetUniformLocation(program, "spotLight.light.specular");
-		uPosition    = glGetUniformLocation(program, "spotLight.light.position");
-		uDirection   = glGetUniformLocation(program, "spotLight.direction");
-		uCutOff		 = glGetUniformLocation(program, "spotLight.cutOff");
+		uAmbient = glGetUniformLocation(program, "spotLight.light.ambient");
+		uDiffuse = glGetUniformLocation(program, "spotLight.light.diffuse");
+		uSpecular = glGetUniformLocation(program, "spotLight.light.specular");
+		uPosition = glGetUniformLocation(program, "spotLight.light.position");
+		uDirection = glGetUniformLocation(program, "spotLight.direction");
+		uCutOff = glGetUniformLocation(program, "spotLight.cutOff");
 		uOuterCutOff = glGetUniformLocation(program, "spotLight.outerCutOff");
 	}
-	
+
 	void Use()
 	{
 		glUniform3fv(uAmbient, 1, glm::value_ptr(ambient));

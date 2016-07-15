@@ -10,75 +10,75 @@
 class WaveGenerator
 {
 protected:
-	float amplitude[SIZE];
-	float wavelength[SIZE];
-	float speed[SIZE];
+	GLfloat amplitude[SIZE];
+	GLfloat wavelength[SIZE];
+	GLfloat speed[SIZE];
 	glm::vec2 direction[SIZE];
 
 public:
 	WaveGenerator()
 	{
-		for (int i = 0; i < SIZE; ++i)
+		for (GLint i = 0; i < SIZE; ++i)
 		{
 			amplitude[i] = 0.25f / (i + 1);
 			wavelength[i] = 8 * PI / (i + 1);
 			speed[i] = 1.0f + 2 * i;
-			float v = glm::radians(360.0f / SIZE * i);
+			GLfloat v = glm::radians(360.0f / SIZE * i);
 			direction[i] = glm::vec2(glm::cos(v), glm::sin(v));
 		}
 	}
 };
 
-class WaveGeneratorGPU : private WaveGenerator 
+class WaveGeneratorGPU : private WaveGenerator
 {
 private:
-	int uTime;
-	int uNumWaves;
-	int uAmplitude;
-	int uWavelength;
-	int uSpeed;
-	int uDirection;
+	GLint uTime;
+	GLint uNumWaves;
+	GLint uAmplitude;
+	GLint uWavelength;
+	GLint uSpeed;
+	GLint uDirection;
 
 public:
 	WaveGeneratorGPU() : WaveGenerator() { }
 
 	WaveGeneratorGPU(GLuint program)
 	{
-		uTime		= glGetUniformLocation(program, "waterDeformer.time");
-		uNumWaves	= glGetUniformLocation(program, "waterDeformer.numWaves");
-		uAmplitude	= glGetUniformLocation(program, "waterDeformer.amplitude");
+		uTime = glGetUniformLocation(program, "waterDeformer.time");
+		uNumWaves = glGetUniformLocation(program, "waterDeformer.numWaves");
+		uAmplitude = glGetUniformLocation(program, "waterDeformer.amplitude");
 		uWavelength = glGetUniformLocation(program, "waterDeformer.wavelength");
-		uSpeed		= glGetUniformLocation(program, "waterDeformer.speed");
-		uDirection	= glGetUniformLocation(program, "waterDeformer.direction");
+		uSpeed = glGetUniformLocation(program, "waterDeformer.speed");
+		uDirection = glGetUniformLocation(program, "waterDeformer.direction");
 	}
 
 	WaveGeneratorGPU& operator=(const WaveGeneratorGPU& waterDeformer)
 	{
-		uTime		= waterDeformer.uTime;
-		uNumWaves	= waterDeformer.uNumWaves;
-		uAmplitude	= waterDeformer.uAmplitude;
-		uWavelength	= waterDeformer.uWavelength;
-		uSpeed		= waterDeformer.uSpeed;
-		uDirection	= waterDeformer.uDirection;
+		uTime = waterDeformer.uTime;
+		uNumWaves = waterDeformer.uNumWaves;
+		uAmplitude = waterDeformer.uAmplitude;
+		uWavelength = waterDeformer.uWavelength;
+		uSpeed = waterDeformer.uSpeed;
+		uDirection = waterDeformer.uDirection;
 
-		for (int i = 0; i < SIZE; ++i) {
-			amplitude[i]	= waterDeformer.amplitude[i];
-			wavelength[i]	= waterDeformer.wavelength[i];
-			speed[i]		= waterDeformer.speed[i];
-			direction[i]	= waterDeformer.direction[i];
+		for (GLint i = 0; i < SIZE; ++i) {
+			amplitude[i] = waterDeformer.amplitude[i];
+			wavelength[i] = waterDeformer.wavelength[i];
+			speed[i] = waterDeformer.speed[i];
+			direction[i] = waterDeformer.direction[i];
 		}
-		
+
 		return *this;
 	}
 
-	void Update(float dt)
+	void Update(GLfloat dt)
 	{
 		glUniform1f(uTime, dt);
 		glUniform1i(uNumWaves, SIZE);
 		glUniform1fv(uAmplitude, SIZE, amplitude);
 		glUniform1fv(uWavelength, SIZE, wavelength);
 		glUniform1fv(uSpeed, SIZE, speed);
-		glUniform2fv(uDirection, SIZE, (float*) direction);
+		glUniform2fv(uDirection, SIZE, (GLfloat*)direction);
 	}
 };
 
@@ -87,7 +87,7 @@ class WaveGeneratorCPU : private WaveGenerator
 private:
 	GLfloat time;
 public:
-	WaveGeneratorCPU()  : WaveGenerator() { }
+	WaveGeneratorCPU() : WaveGenerator() { }
 
 	void Update(GLfloat dt, std::vector<Vertex>& vertices)
 	{
@@ -99,52 +99,52 @@ public:
 			glm::vec3 deformedNormal = waveNormal(deformedPosition.x, deformedPosition.z);
 
 			vertices[i].position = deformedPosition;
-			vertices[i].normal   = deformedNormal;
+			vertices[i].normal = deformedNormal;
 		}
 	}
 
 	~WaveGeneratorCPU() { }
 
-private:	
-	float wave(int i, float x, float z)
+private:
+	GLfloat wave(GLint i, GLfloat x, GLfloat z)
 	{
-		float frequency = 2 * PI / wavelength[i];
-		float phase = speed[i] * frequency;
-		float theta = glm::dot(direction[i], glm::vec2(x, z));
+		GLfloat frequency = 2 * PI / wavelength[i];
+		GLfloat phase = speed[i] * frequency;
+		GLfloat theta = glm::dot(direction[i], glm::vec2(x, z));
 		return amplitude[i] * sin(theta * frequency + time * phase);
 	}
 
-	float waveHeight(float x, float z)
+	GLfloat waveHeight(GLfloat x, GLfloat z)
 	{
-		float height = 0.0f;
-		for (int i = 0; i < SIZE; ++i)
+		GLfloat height = 0.0f;
+		for (GLint i = 0; i < SIZE; ++i)
 			height += wave(i, x, z);
 		return height;
 	}
 
-	float dWavedx(int i, float x, float z)
+	GLfloat dWavedx(GLint i, GLfloat x, GLfloat z)
 	{
-		float frequency = 2 * PI / wavelength[i];
-		float phase = speed[i] * frequency;
-		float theta = glm::dot(direction[i], glm::vec2(x, z));
-		float A = amplitude[i] * direction[i].x * frequency;
+		GLfloat frequency = 2 * PI / wavelength[i];
+		GLfloat phase = speed[i] * frequency;
+		GLfloat theta = glm::dot(direction[i], glm::vec2(x, z));
+		GLfloat A = amplitude[i] * direction[i].x * frequency;
 		return A * cos(theta * frequency + time * phase);
 	}
 
-	float dWavedz(int i, float x, float z)
+	GLfloat dWavedz(GLint i, GLfloat x, GLfloat z)
 	{
-		float frequency = 2 * PI / wavelength[i];
-		float phase = speed[i] * frequency;
-		float theta = glm::dot(direction[i], glm::vec2(x, z));
-		float A = amplitude[i] * direction[i].y * frequency;
+		GLfloat frequency = 2 * PI / wavelength[i];
+		GLfloat phase = speed[i] * frequency;
+		GLfloat theta = glm::dot(direction[i], glm::vec2(x, z));
+		GLfloat A = amplitude[i] * direction[i].y * frequency;
 		return A * cos(theta * frequency + time * phase);
 	}
 
-	glm::vec3 waveNormal(float x, float z)
+	glm::vec3 waveNormal(GLfloat x, GLfloat z)
 	{
-		float dx = 0.0f;
-		float dz = 0.0f;
-		for (int i = 0; i < SIZE; ++i)
+		GLfloat dx = 0.0f;
+		GLfloat dz = 0.0f;
+		for (GLint i = 0; i < SIZE; ++i)
 		{
 			dx += dWavedx(i, x, z);
 			dz += dWavedz(i, x, z);

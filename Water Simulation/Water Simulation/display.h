@@ -32,11 +32,11 @@ public:
 
 		window = SDL_CreateWindow(wndName.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL);
 		glContext = SDL_GL_CreateContext(window);
-		
+
 		glewInit();
 
 		glViewport(0, 0, width, height);
-		glEnable(GL_DEPTH_TEST);	
+		glEnable(GL_DEPTH_TEST);
 		glEnable(GL_CULL_FACE);
 		glFrontFace(GL_CCW);
 		glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -47,7 +47,7 @@ public:
 
 	void Clear(GLfloat r, GLfloat g, GLfloat b, GLfloat a)
 	{
-		glClearColor(r, g, b , a);
+		glClearColor(r, g, b, a);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	}
 
@@ -60,7 +60,7 @@ public:
 	{
 		SDL_SetWindowTitle(window, wndName.c_str());
 	}
-	
+
 	~Display()
 	{
 		SDL_GL_DeleteContext(glContext);
