@@ -66,8 +66,14 @@ private:
 	GLuint UBO;
 	
 public:
+	GLenum renderMode = GL_FILL;
+	GLuint waveGeneratorMode = 0;
 	// For animation	
 	GLfloat dt	= 0.0f;	
+
+	void SetDeltaTime(GLfloat dt) { this->dt += dt; }
+	void SetRenderMode(GLenum renderMode) { this->renderMode = renderMode; }
+	void SetWaveGeneratorMode(GLenum waveGeneratorMode) { this->waveGeneratorMode = waveGeneratorMode; }
 
 private:
 	void CompileShaders()
@@ -82,7 +88,7 @@ private:
 	{
 		directionalLight = DirectionalLight(
 			glm::vec3(0.1f), glm::vec3(1.0f), glm::vec3(1.0f),
-			glm::vec3(-50.0f, 20.0f, 0.0f));
+			glm::vec3(-50.0f, 25.0f, 10.0f));
 	}
 
 	void ActivateDirectionalLights(Shader& shader)
@@ -158,8 +164,6 @@ private:
 	}
 
 public:
-	void SetDeltaTime(GLfloat dt) { this->dt += dt; }
-
 	Renderer(Camera* camera, GLuint wndWidth, GLuint wndHeight)
 	{		
 		this->camera	= camera;
@@ -174,39 +178,50 @@ public:
 	
 	void RenderScene()
 	{	
+		glPolygonMode(GL_FRONT_AND_BACK, this->renderMode);
+
 		glBindBuffer(GL_UNIFORM_BUFFER, UBO);
 		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(glm::mat4), glm::value_ptr(camera->GetViewMatrix()));
 		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 
-		// Skybox		
-		skyboxTransformation.Scale(glm::vec3(500.0f));
-		skyboxTransformation.Translate(camera->GetEyePos());
-		skyboxShader.Use();
-			glUniformMatrix4fv(UniformLoc::MODEL, 1, false, glm::value_ptr(skyboxTransformation.GetModel()));
-			glFrontFace(GL_CW);
-			skyboxTex.Use();
-			skyboxMesh.DrawArrays();
-			skyboxTex.Unuse();
-			glFrontFace(GL_CCW);
-		skyboxShader.Unuse();
+		if (this->renderMode != GL_LINE){
+			// Skybox		
+			skyboxTransformation.Scale(glm::vec3(500.0f));
+			skyboxTransformation.Translate(camera->GetEyePos());
+			skyboxShader.Use();
+				glUniformMatrix4fv(UniformLoc::MODEL, 1, false, glm::value_ptr(skyboxTransformation.GetModel()));
+				glFrontFace(GL_CW);
+				skyboxTex.Use();
+				skyboxMesh.DrawArrays();
+				skyboxTex.Unuse();
+				glFrontFace(GL_CCW);
+			skyboxShader.Unuse();		
 
-		// Lights
-		AcivateLights(defaultShader);
+			// Lights
+			AcivateLights(defaultShader);
 
-		// Floor
-		floorTransformation.Translate(glm::vec3(0.0f, -2.0f, 0.0f));
-		defaultShader.Use();
-			glUniform3fv(UniformLoc::EYE_POSITION, 1, glm::value_ptr(camera->GetEyePos()));
-			glUniformMatrix4fv(UniformLoc::MODEL, 1, false, glm::value_ptr(floorTransformation.GetModel()));
-			glUniformMatrix4fv(UniformLoc::INVERSE_TRANSPOSE, 1, false, glm::value_ptr(floorTransformation.GetInverseTranspose()));			
-			floorMaterial.Use(defaultShader.GetProgram());
-			checkeredTexture.Use(defaultShader.GetProgram(), "maps.diffuse", 0);
-			floorMesh.DrawElements();
-			checkeredTexture.Unuse();
-		defaultShader.Unuse();
+			// Floor
+			floorTransformation.Translate(glm::vec3(0.0f, -2.0f, 0.0f));
+			defaultShader.Use();
+				glUniform3fv(UniformLoc::EYE_POSITION, 1, glm::value_ptr(camera->GetEyePos()));
+				glUniformMatrix4fv(UniformLoc::MODEL, 1, false, glm::value_ptr(floorTransformation.GetModel()));
+				glUniformMatrix4fv(UniformLoc::INVERSE_TRANSPOSE, 1, false, glm::value_ptr(floorTransformation.GetInverseTranspose()));			
+				floorMaterial.Use(defaultShader.GetProgram());
+				checkeredTexture.Use(defaultShader.GetProgram(), "maps.diffuse", 0);
+				floorMesh.DrawElements();
+				checkeredTexture.Unuse();
+			defaultShader.Unuse();
+		}
 
 		// Water
-		RenderWaterGPU();
+		if (waveGeneratorMode == 0)
+		{
+			RenderWaterGPU();
+		}
+		else if (waveGeneratorMode == 1)
+		{
+			RenderWaterCPU();
+		}
 	}
 
 private:

@@ -62,8 +62,11 @@ int main(int argc, char ** argv)
 			{
 				switch (e.key.keysym.sym)
 				{
-				case SDLK_1: glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); break;
-				case SDLK_2: glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); break;
+				case SDLK_1: renderer.SetRenderMode(GL_LINE); break;
+				case SDLK_2: renderer.SetRenderMode(GL_FILL); break;
+
+				case SDLK_c: renderer.SetWaveGeneratorMode(1); break;
+				case SDLK_g: renderer.SetWaveGeneratorMode(0); break;
 
 				case SDLK_a: eventHandler.KeyPressed(KEY_LEFT);  break;
 				case SDLK_d: eventHandler.KeyPressed(KEY_RIGHT); break;
@@ -94,7 +97,9 @@ int main(int argc, char ** argv)
 		eventHandler.Process(&camera, (GLfloat)timer.DeltaTime(), (GLfloat)mouseXpos, (GLfloat)mouseYpos);
 		
 		renderer.SetDeltaTime((GLfloat)timer.DeltaTime() * 0.1f);
+		display.RenderSceneToFrameBuffer();		
 		renderer.RenderScene();		
+		display.DisplayFrameBufferContent();	
 
 		display.SwapBuffers();
 
