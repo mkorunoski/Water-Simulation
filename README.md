@@ -1,6 +1,6 @@
 # Water Simulation
-Water simulation utilizing GLSL
-## Links
+Water simulation utilizing OpenGL and OpenGL Shading Language.
+## Reference Material
 - [Effective Water Simulation from Physical Models]
 (http://http.developer.nvidia.com/GPUGems/gpugems_ch01.html)
 - [Rendering Water Caustics]
