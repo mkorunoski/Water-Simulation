@@ -13,3 +13,4 @@ Water simulation utilizing OpenGL and OpenGL Shading Language.
 (http://www.bonzaisoftware.com/tnp/gl-water-tutorial/)
 
 ## Screenshot
+![Image Title](https://github.com/mkorunoski/Water-Simulation/blob/master/Images/Results.jpg)
