@@ -13,5 +13,5 @@ A practical implementation of water simulation, utilizing OpenGL and OpenGL Shad
 - [Water tutorial]
 (http://www.bonzaisoftware.com/tnp/gl-water-tutorial/)
 
-## Screenshot
+## Screenshots
 ![Image Title](https://github.com/mkorunoski/Water-Simulation/blob/master/Images/Results.jpg)
