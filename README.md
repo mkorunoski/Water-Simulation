@@ -1,7 +1,8 @@
 # Water Simulation
-Water simulation utilizing OpenGL and OpenGL Shading Language.
+A practical implementation of water simulation. The evaluation shows speedup of the GPU over the CPU when it comes to real-time rendering. Relevant experiments to compare the results are conducted.
+
 ## Reference Material
-- [Effective Water Simulation from Physical Models]
+- [Effective Water Simulation from Physical Models (Implemented)]
 (http://http.developer.nvidia.com/GPUGems/gpugems_ch01.html)
 - [Rendering Water Caustics]
 (http://http.developer.nvidia.com/GPUGems/gpugems_ch02.html)
