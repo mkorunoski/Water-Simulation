@@ -1,5 +1,5 @@
 # Water Simulation
-A practical implementation of water simulation. The evaluation shows speedup of the GPU over the CPU when it comes to real-time surface deformation. Relevant experiments to compare the results are conducted.
+A practical implementation of water simulation, utilizing OpenGL and OpenGL Shading Language. The evaluation shows speedup of the GPU over the CPU when it comes to real-time surface deformation. Relevant experiments to compare the results are conducted.
 
 ## Reference Material
 - [Effective Water Simulation from Physical Models (Implemented)]
